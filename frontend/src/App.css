@@ -3,6 +3,18 @@ h3, td, p{
     font-size: 3vmin;
 }
 
+.completo {
+  font-size: 3vmin;
+}
+
+.bilingue {
+  font-size: 5vmin;
+}
+
+.pt {
+  font-size: 6vmin;
+}
+
 p {
   font-style: italic;
 }

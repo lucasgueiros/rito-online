@@ -9,6 +9,7 @@ function App() {
   const [pagina, setPagina] = useState(1);
   const [password, setPassword] = useState("");
   const [atual, setAtual] = useState(true);
+  const [ style, setStyle] = useState("completo");
   const controle = (new URLSearchParams(document.location.search)).get('controle') == "sim";
 
   useEffect(() => {
@@ -26,6 +27,13 @@ function App() {
       }
     }).then((content) => {
       setData(content);
+      if(content.data.latim == "" && content.data.partitura == "") {
+        setStyle("pt");
+      } else if (content.data.partitura =="") {
+        setStyle("bilingue");
+      } else {
+        setStyle("completo");
+      }
       if (atual) {
         setPagina(content.data.id)
       }
@@ -58,8 +66,8 @@ function App() {
             </td>
           </tr>
           <tr>
-            <td colSpan={data.data.latim == "" ? 4 : 2} style={{ width: data.data.latim == "" ? '100%' : '50%' }}>{parse(data.data.portugues)}</td>
-            <td colSpan={2} style={{ width: '50%' }}>{parse(data.data.latim)}</td>
+            <td colSpan={data.data.latim == "" ? 4 : 2} style={{ width: data.data.latim == "" ? '100%' : '50%' }} className={style}>{parse(data.data.portugues)}</td>
+            <td colSpan={2} style={{ width: '50%' }} className={style}>{parse(data.data.latim)}</td>
           </tr>
 
 
