@@ -3,6 +3,7 @@ var bodyParser = require("body-parser");
 const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
 var fs = require("fs");
+const path = require('path');
 
 var app = express();
 
@@ -21,15 +22,14 @@ app.use(function(req, res, next){
  res.setHeader("Access-Control-Allow-Origin", "*");
  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
  res.setHeader("Access-Control-Allow-Headers", "content-type");
- res.setHeader("Content-Type", "application/json");
+ //res.setHeader("Content-Type", "text/html");
  res.setHeader("Access-Control-Allow-Credentials", true);
  next();
 });
 
-app.use('/',express.static('../frontend/build'));
-
 app.get('/rito', (req, res) => {
     
+    res.setHeader("Content-Type", "application/json");
     if(req.query.atual == "true") {
         var sql = "select * from rito where id = (select valor from info where chave = \"linha_atual\")";
         db.get(sql, [], (err, row) => {
@@ -58,6 +58,7 @@ app.get('/rito', (req, res) => {
 
 app.post('/alterar', (req, res) => {
     // Primeiro, a senha tem que estar correta
+    res.setHeader("Content-Type", "application/json");
     var senha = req.body.senha;
     if(!senha) {
         return res.json({message: "ERRO!"});
@@ -90,6 +91,8 @@ app.post('/alterar', (req, res) => {
         })
     })
 });
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 var server = app.listen(9090, function(){ console.log("Servidor Web rodando na porta 9090") });
 

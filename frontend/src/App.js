@@ -9,7 +9,7 @@ function App() {
   const [pagina, setPagina] = useState(1);
   const [password, setPassword] = useState("");
   const [atual, setAtual] = useState(true);
-  const controle = window.location.pathname == "/controle";
+  const controle = (new URLSearchParams(document.location.search)).get('controle') == "sim";
 
   useEffect(() => {
     const interval = setInterval(() => setTime(Date.now()), 5000);
