@@ -58,7 +58,7 @@ function App() {
             </td>
           </tr>
           <tr>
-            <td colSpan={2} style={{ width: '50%' }}>{parse(data.data.portugues)}</td>
+            <td colSpan={data.data.latim == "" ? 4 : 2} style={{ width: data.data.latim == "" ? '100%' : '50%' }}>{parse(data.data.portugues)}</td>
             <td colSpan={2} style={{ width: '50%' }}>{parse(data.data.latim)}</td>
           </tr>
 

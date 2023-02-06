@@ -26,6 +26,8 @@ app.use(function(req, res, next){
  next();
 });
 
+app.use('/',express.static('../frontend/build'));
+
 app.get('/rito', (req, res) => {
     
     if(req.query.atual == "true") {
