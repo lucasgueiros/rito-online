@@ -26,21 +26,35 @@ app.use(function(req, res, next){
  next();
 });
 
-app.get('/rito_atual', (req, res) => {
+app.get('/rito', (req, res) => {
     
-    var sql = "SELECT * FROM rito WHERE id = (select valor from info where chave = \"linha_atual\")";
-    db.get(sql, [], (err, row) => {
-        if (err) {
-          console.error(err.message);
-          res.json({
-            message: "ERROR!"
-          })
-        }
-        res.json(row);
-    })
+    if(req.query.atual == "true") {
+        var sql = "select * from rito where id = (select valor from info where chave = \"linha_atual\")";
+        db.get(sql, [], (err, row) => {
+            if (err) {
+                console.error(err.message);
+                res.json({
+                    message: "error!"
+                })
+            }
+            res.json(row);
+        })
+    } else {
+        var sql = "select * from rito where id = ?";
+        db.get(sql, [req.query.pagina], (err, row) => {
+            if (err) {
+                console.error(err.message);
+                res.json({
+                    message: "error!"
+                })
+            }
+            res.json(row);
+        })
+    }
+    
 });
 
-app.post('/proximo', (req, res) => {
+app.post('/alterar', (req, res) => {
     // Primeiro, a senha tem que estar correta
     var senha = req.body.senha;
     if(!senha) {
@@ -60,75 +74,19 @@ app.post('/proximo', (req, res) => {
             });
         }
         // Agora sim
-        var sql1 = "SELECT valor FROM info WHERE chave = \"linha_atual\"";
-        var sql2 = "UPDATE info SET valor = ? WHERE chave = \"linha_atual\"";
-        db.get(sql1, [], (err, row) => {
+    var sql = "UPDATE info SET valor = ? WHERE chave = \"linha_atual\"";
+        db.get(sql, [req.body.pagina], (err, row) => {
             if (err) {
                 console.error(err.message);
                 return res.json({
                     message: "ERROR!"
                 });
             }
-            console.log(row);
-            db.get(sql2, [(parseInt(row.valor) + 1).toString()], (err, row) => {
-                if (err) {
-                    console.error(err.message);
-                    return res.json({
-                        message: "ERROR!"
-                    });
-                }
-                return res.json({
-                    message: "OK!"
-                })
-                return;
+            return res.json({
+                message: "OK!"
             })
         })
-    });
-});
-app.post('/anterior', (req, res) => {
-    // Primeiro, a senha tem que estar correta
-    var senha = req.body.senha;
-    if(!senha) {
-        return res.json({message: "ERRO!"});
-    }
-    var sqlSenha = "SELECT valor FROM info WHERE chave = \"senha\"";
-    db.get(sqlSenha, [], (err, row) => {
-        if(err) {
-            console.error(err.message);
-            return res.json({
-                message: "ERROR!"
-            })
-        }
-        if(row.valor != senha) {
-            return res.json({
-                message: "FALHA AUTENTICACAO"
-            });
-        }
-        // Agora sim
-        var sql1 = "SELECT valor FROM info WHERE chave = \"linha_atual\"";
-        var sql2 = "UPDATE info SET valor = ? WHERE chave = \"linha_atual\"";
-        db.get(sql1, [], (err, row) => {
-            if (err) {
-                console.error(err.message);
-                return res.json({
-                    message: "ERROR!"
-                });
-            }
-            console.log(row);
-            db.get(sql2, [(parseInt(row.valor) - 1).toString()], (err, row) => {
-                if (err) {
-                    console.error(err.message);
-                    return res.json({
-                        message: "ERROR!"
-                    });
-                }
-                return res.json({
-                    message: "OK!"
-                })
-                return;
-            })
-        })
-    });
+    })
 });
 
 var server = app.listen(9090, function(){ console.log("Servidor Web rodando na porta 9090") });

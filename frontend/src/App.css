@@ -1,0 +1,28 @@
+h3, td {
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    align-self: center;
+}
+.App {
+    margin-top: 50px;
+    background: rgba(255, 255, 255, 0.50);
+}
+
+table {
+    width: 100%;
+}
+
+body{
+    background-color: #fdfdfb;
+    background-image: url('http://localhost:3000/cima.png'),
+      url('http://localhost:3000/baixo.png');
+    background-position:
+      top right,
+      bottom left;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-size: 230px 230px;
+  }
