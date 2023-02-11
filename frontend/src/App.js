@@ -57,7 +57,7 @@ function App() {
     <div className="App">
       <h3>{data.data.titulo}</h3>
       <p>{data.data.referencia}</p>
-      <table>
+      <table className="content">
         <tbody>
           <tr hidden={data.data.partitura == ""}>
             <td colSpan={4}>
@@ -69,7 +69,6 @@ function App() {
             <td colSpan={data.data.latim == "" ? 4 : 2} style={{ width: data.data.latim == "" ? '100%' : '50%' }} className={style}>{ data.data.portugues ? parse(data.data.portugues) : ""}</td>
             <td colSpan={2} style={{ width: '50%' }} className={style}>{parse(data.data.latim || "")}</td>
           </tr>
-
 
         </tbody>
 
